@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import Colors from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 const Layout = () => {
   return (
@@ -35,21 +35,31 @@ const Layout = () => {
       />
 
       <Tabs.Screen
-        name="profile"
+        name="trips"
         options={{
-          tabBarLabel: "Profile",
+          tabBarLabel: "Trips",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-circle-outline" color={color} size={size} />
+            <MaterialIcons name="luggage" color={color} size={size} />
           ),
         }}
       />
 
       <Tabs.Screen
-        name="bookings"
+        name="inbox"
         options={{
-          tabBarLabel: "Bookings",
+          tabBarLabel: "Inbox",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar-outline" color={color} size={size} />
+            <Feather name="inbox" color={color} size={size} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarLabel: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-circle-outline" color={color} size={size} />
           ),
         }}
       />
