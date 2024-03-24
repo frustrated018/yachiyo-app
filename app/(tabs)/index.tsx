@@ -22,8 +22,6 @@ const Page = () => {
         }}
       />
 
-      <Text>Bruhhhh</Text>
-
       <Listings listings={items} category={category} />
     </View>
   );
