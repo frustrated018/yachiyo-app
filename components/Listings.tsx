@@ -8,7 +8,12 @@ interface Props {
 
 const Listings = ({ listings, category }: Props) => {
   useEffect(() => {
-    console.log("Reload Lisitngs with: ", category);
+    console.log(
+      "Reload Lisitngs",
+      listings.length,
+      "with data about this:",
+      category
+    );
   }, [category]);
 
   return (
