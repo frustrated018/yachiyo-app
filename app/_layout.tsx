@@ -4,6 +4,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import CustomHeader from "@/components/CustomHeader";
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
@@ -96,6 +97,14 @@ function RootLayoutNav() {
       <Stack.Screen
         name="listing/[id]"
         options={{ headerTitle: "", headerTransparent: true }}
+      />
+      <Stack.Screen
+        name="(modals)/booking"
+        options={{
+          animation: "fade",
+          headerTransparent: true,
+          headerTitle: () => <CustomHeader />,
+        }}
       />
     </Stack>
   );
