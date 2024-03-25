@@ -30,4 +30,16 @@ export const defaultStyles = StyleSheet.create({
     position: "absolute",
     left: 16,
   },
+  footer: {
+    position: "absolute",
+    height: 100,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderTopColor: Colors.text,
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
 });
