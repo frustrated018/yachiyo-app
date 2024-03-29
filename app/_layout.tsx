@@ -5,6 +5,9 @@ import { useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import CustomHeader from "@/components/CustomHeader";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
@@ -82,30 +85,32 @@ function RootLayoutNav() {
   }, [isLoaded]);
 
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="(modals)/login"
-        options={{
-          title: "Log in or Sign Up",
-          headerTitleStyle: {
-            fontFamily: "mon-sb",
-          },
-          presentation: "modal",
-        }}
-      />
-      <Stack.Screen
-        name="listing/[id]"
-        options={{ headerTitle: "", headerTransparent: true }}
-      />
-      <Stack.Screen
-        name="(modals)/booking"
-        options={{
-          animation: "fade",
-          headerTransparent: true,
-          headerTitle: () => <CustomHeader />,
-        }}
-      />
-    </Stack>
+    <QueryClientProvider client={queryClient}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="(modals)/login"
+          options={{
+            title: "Log in or Sign Up",
+            headerTitleStyle: {
+              fontFamily: "mon-sb",
+            },
+            presentation: "modal",
+          }}
+        />
+        <Stack.Screen
+          name="listing/[id]"
+          options={{ headerTitle: "", headerTransparent: true }}
+        />
+        <Stack.Screen
+          name="(modals)/booking"
+          options={{
+            animation: "fade",
+            headerTransparent: true,
+            headerTitle: () => <CustomHeader />,
+          }}
+        />
+      </Stack>
+    </QueryClientProvider>
   );
 }

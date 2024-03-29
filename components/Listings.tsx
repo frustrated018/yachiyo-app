@@ -15,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 
 interface Props {
-  listings: any[];
+  listings: Listing[];
   category: string;
 }
 
