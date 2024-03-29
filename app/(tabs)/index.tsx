@@ -1,10 +1,8 @@
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
-import React, { useMemo, useState } from "react";
+import { useState } from "react";
 import { Stack } from "expo-router";
 import ExploreHeader from "@/components/ExploreHeader";
 import Listings from "@/components/Listings";
-import listingsData from "@/assets/data/airbnb-listings.json";
-import { Listing } from "@/interfaces/listings";
 import { useQuery } from "@tanstack/react-query";
 import { fetchlistings } from "@/api/listingsRelatedApi";
 import Colors from "@/constants/Colors";

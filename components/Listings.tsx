@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   FlatList,
@@ -7,17 +8,19 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
 import { defaultStyles } from "@/constants/Styles";
 import { Link } from "expo-router";
 import { Listing } from "@/interfaces/listings";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
+import Pagination from "./Pagination";
 
 interface Props {
   listings: Listing[];
   category: string;
 }
+
+//! Issue: Don't really need the category here do we? Will fetch the data in the parent componenet and simply drill it down....
 
 const Listings = ({ listings: items, category }: Props) => {
   const [loading, setLoading] = useState(false);
@@ -26,7 +29,7 @@ const Listings = ({ listings: items, category }: Props) => {
 
   useEffect(() => {
     console.log(
-      "Reload Lisitngs",
+      "Reload Listings",
       items.length,
       "with data about this:",
       category
@@ -88,12 +91,16 @@ const Listings = ({ listings: items, category }: Props) => {
       </Link>
     );
   };
+
   return (
     <View style={defaultStyles.container}>
       <FlatList
         renderItem={renderRow}
         data={loading ? [] : items}
         ref={listRef}
+        ListFooterComponent={() => (
+          <Pagination totalPages={132} currentPage={1} />
+        )}
       />
     </View>
   );
