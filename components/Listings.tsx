@@ -62,9 +62,12 @@ const Listings = ({ listings: items, category }: Props) => {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
+                flexWrap: "wrap",
               }}
             >
-              <Text style={{ fontSize: 16, fontFamily: "mon-sb" }}>
+              <Text
+                style={{ fontSize: 16, fontFamily: "mon-sb", width: "80%" }}
+              >
                 {item.name}
               </Text>
               <View style={{ flexDirection: "row", gap: 4 }}>
@@ -74,6 +77,7 @@ const Listings = ({ listings: items, category }: Props) => {
                 </Text>
               </View>
             </View>
+
             <Text style={{ fontFamily: "mon" }}>{item.room_type}</Text>
             <View style={{ flexDirection: "row", gap: 4 }}>
               <Text style={{ fontFamily: "mon-sb" }}>$ {item.price}</Text>
