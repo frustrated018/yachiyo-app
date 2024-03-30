@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { defaultStyles } from "@/constants/Styles";
 import { Link } from "expo-router";
@@ -14,34 +15,27 @@ import { Listing } from "@/interfaces/listings";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 import Pagination from "./Pagination";
+import { useQuery } from "@tanstack/react-query";
+import { fetchlistings } from "@/api/listingsRelatedApi";
+import Colors from "@/constants/Colors";
 
-interface Props {
-  listings: Listing[];
+interface ListingsProps {
   category: string;
 }
 
-//! Issue: Don't really need the category here do we? Will fetch the data in the parent componenet and simply drill it down....
+const Listings = ({ category }: ListingsProps) => {
+  //TODO: use Categroy to fetch data later
 
-const Listings = ({ listings: items, category }: Props) => {
-  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["listings",currentPage],
+    queryFn: () => fetchlistings({ currentPage }),
+  });
+  const items = data?.data;
+  const metaData = data?.metaData;
 
   const listRef = useRef<FlatList>(null);
-
-  useEffect(() => {
-    console.log(
-      "Reload Listings",
-      items.length,
-      "with data about this:",
-      category
-    );
-
-    //! Fake DB Call
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 200);
-  }, [category]);
-
   // Render one listing row for the FlatList
   const renderRow: ListRenderItem<Listing> = ({ item }) => {
     return (
@@ -94,19 +88,43 @@ const Listings = ({ listings: items, category }: Props) => {
 
   return (
     <View style={defaultStyles.container}>
-      <FlatList
-        renderItem={renderRow}
-        data={loading ? [] : items}
-        ref={listRef}
-        ListFooterComponent={() => (
-          <Pagination totalPages={132} currentPage={1} />
-        )}
-      />
+      {isLoading && (
+        <View style={styles.stateContainer}>
+          <ActivityIndicator size="large" color={Colors.primary} />
+        </View>
+      )}
+      {isError && (
+        <View style={styles.stateContainer}>
+          <Text style={{ color: "#d00000", fontFamily: "mon-b", fontSize: 20 }}>
+            Couldn't Get Listings.
+          </Text>
+        </View>
+      )}
+
+      {!isLoading && !isError && (
+        <FlatList
+          renderItem={renderRow}
+          data={items}
+          ref={listRef}
+          ListFooterComponent={() => (
+            <Pagination
+              totalPages={metaData.totalPages}
+              currentPage={currentPage}
+              onPageChange={(page: number) => setCurrentPage(page)}
+            />
+          )}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  stateContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   listing: {
     padding: 16,
     gap: 10,
