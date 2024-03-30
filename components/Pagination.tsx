@@ -8,9 +8,6 @@ interface paginationProps {
   onPageChange: Function;
 }
 
-//TODO: Add Disable logic to these buttons
-//TODO: Add onPress to both previous and next buttons and handle the logic for those
-
 const Pagination = ({
   currentPage,
   totalPages,
@@ -23,11 +20,15 @@ const Pagination = ({
     <View style={{ alignItems: "center", marginVertical: 20 }}>
       <View style={styles.container}>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, currentPage === 1 && styles.disabledButton]}
           onPress={handlePrevClick}
           disabled={currentPage === 1}
         >
-          <Feather name="chevrons-left" size={24} />
+          <Feather
+            name="chevrons-left"
+            size={24}
+            color={currentPage === 1 ? "#666666" : "white"}
+          />
         </TouchableOpacity>
 
         <Text style={styles.pageNumberText}>
@@ -35,11 +36,18 @@ const Pagination = ({
         </Text>
 
         <TouchableOpacity
-          style={styles.button}
+          style={[
+            styles.button,
+            currentPage === totalPages && styles.disabledButton,
+          ]}
           onPress={handleNextClick}
           disabled={currentPage === totalPages}
         >
-          <Feather name="chevrons-right" size={24} />
+          <Feather
+            name="chevrons-right"
+            size={24}
+            color={currentPage === totalPages ? "#666666" : "white"}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -60,6 +68,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     backgroundColor: Colors.secondary,
+  },
+  disabledButton: {
+    backgroundColor: "#CCCCCC",
+  },
+  buttonText: {
+    color: "white",
+  },
+  disabledButtonText: {
+    color: "#666666",
   },
   pageNumberText: {
     fontSize: 16,
