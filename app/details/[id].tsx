@@ -1,27 +1,20 @@
-import { useLocalSearchParams, useNavigation } from "expo-router";
-import React, { useLayoutEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Image,
+  ActivityIndicator,
   Dimensions,
   TouchableOpacity,
-  Share,
-  ActivityIndicator,
+  Image,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import Colors from "@/constants/Colors";
-import Animated, {
-  SlideInDown,
-  interpolate,
-  useAnimatedRef,
-  useAnimatedStyle,
-  useScrollViewOffset,
-} from "react-native-reanimated";
-import { defaultStyles } from "@/constants/Styles";
+import React from "react";
+import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { fetchLisingById } from "@/api/listingsRelatedApi";
+import Colors from "@/constants/Colors";
+import { defaultStyles } from "@/constants/Styles";
+import Animated, { SlideInDown } from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
@@ -32,87 +25,14 @@ const DetailsPage = () => {
   // Handle if params.id is an array by taking the first element
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["blabla"],
+  const {
+    data: listing,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ["Detials"],
     queryFn: () => fetchLisingById({ id }),
   });
-
-  const listing = data;
-
-  const navigation = useNavigation();
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-
-  //! Sharing shit
-  const shareListing = async () => {
-    try {
-      await Share.share({
-        title: listing?.name,
-        url: listing?.listing_url,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: "",
-      headerTransparent: true,
-
-      headerBackground: () => (
-        <Animated.View
-          style={[headerAnimatedStyle, styles.header]}
-        ></Animated.View>
-      ),
-      headerRight: () => (
-        <View style={styles.bar}>
-          <TouchableOpacity style={styles.roundButton} onPress={shareListing}>
-            <Ionicons name="share-outline" size={22} color={"#000"} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.roundButton}>
-            <Ionicons name="heart-outline" size={22} color={"#000"} />
-          </TouchableOpacity>
-        </View>
-      ),
-      headerLeft: () => (
-        <TouchableOpacity
-          style={styles.roundButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="chevron-back" size={24} color={"#000"} />
-        </TouchableOpacity>
-      ),
-    });
-  }, []);
-
-  const scrollOffset = useScrollViewOffset(scrollRef);
-
-  const imageAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(
-            scrollOffset.value,
-            [-IMG_HEIGHT, 0, IMG_HEIGHT, IMG_HEIGHT],
-            [-IMG_HEIGHT / 2, 0, IMG_HEIGHT * 0.75]
-          ),
-        },
-        {
-          scale: interpolate(
-            scrollOffset.value,
-            [-IMG_HEIGHT, 0, IMG_HEIGHT],
-            [2, 1, 1]
-          ),
-        },
-      ],
-    };
-  });
-
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: interpolate(scrollOffset.value, [0, IMG_HEIGHT / 1.5], [0, 1]),
-    };
-  }, []);
 
   // Render loading indicator if data is loading
   if (isLoading) {
@@ -138,12 +58,11 @@ const DetailsPage = () => {
     <View style={styles.container}>
       <Animated.ScrollView
         contentContainerStyle={{ paddingBottom: 100 }}
-        ref={scrollRef}
         scrollEventThrottle={16}
       >
         <Animated.Image
           source={{ uri: listing?.xl_picture_url }}
-          style={[styles.image, imageAnimatedStyle]}
+          style={[styles.image]}
           resizeMode="cover"
         />
 
@@ -218,6 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   container: {
     flex: 1,
     backgroundColor: "white",
