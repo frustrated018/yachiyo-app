@@ -24,6 +24,8 @@ interface ListingsProps {
 }
 
 const Listings = ({ category }: ListingsProps) => {
+  console.log("Fetch Here: " + category);
+
   //TODO: use Categroy to fetch data later
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -74,7 +76,12 @@ const Listings = ({ category }: ListingsProps) => {
               </View>
             </View>
 
-            <Text style={{ fontFamily: "mon" }}>{item.room_type}</Text>
+            <Text style={{ fontFamily: "mon" }}>
+              Room Type: {item.room_type}
+            </Text>
+            <Text style={{ fontFamily: "mon" }}>
+              Property Type: {item.property_type}
+            </Text>
             <View style={{ flexDirection: "row", gap: 4 }}>
               <Text style={{ fontFamily: "mon-sb" }}>$ {item.price}</Text>
               <Text style={{ fontFamily: "mon" }}>night</Text>

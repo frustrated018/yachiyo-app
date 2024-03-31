@@ -15,24 +15,29 @@ import * as Haptics from "expo-haptics";
 
 const categories = [
   {
-    name: "Tiny homes",
+    name: "Apartments",
+    icon: "apartment",
+    category: "Apartment",
+  },
+  {
+    name: "Houses",
     icon: "home",
+    category: "House",
   },
   {
     name: "Cabins",
     icon: "house-siding",
+    category: "Cabin",
   },
   {
-    name: "Trending",
+    name: "Bed & Breakfast",
     icon: "local-fire-department",
+    category: "Bed %26 Breakfast",
   },
   {
-    name: "City",
-    icon: "apartment",
-  },
-  {
-    name: "Beachfront",
+    name: "Others",
     icon: "beach-access",
+    category: "Other",
   },
 ];
 
@@ -41,22 +46,16 @@ interface Props {
 }
 
 const ExploreHeader = ({ onCategoryChanged }: Props) => {
-  const scrollRef = useRef<ScrollView>(null);
-  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const selectCategory = (idx: number) => {
-    const selected = itemsRef.current[idx];
     setActiveIndex(idx);
-    selected?.measure((x) => {
-      scrollRef.current?.scrollTo({ x: x - 16, y: 0, animated: true });
-    });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onCategoryChanged(categories[idx].name);
+    onCategoryChanged(categories[idx].category);
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <View style={styles.container}>
         <View style={styles.actionRow}>
           <Link href={"/(modals)/booking"} asChild>
@@ -78,7 +77,6 @@ const ExploreHeader = ({ onCategoryChanged }: Props) => {
 
         <ScrollView
           horizontal={true}
-          ref={scrollRef}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             alignItems: "center",
@@ -90,7 +88,6 @@ const ExploreHeader = ({ onCategoryChanged }: Props) => {
             <TouchableOpacity
               key={item.name + idx}
               onPress={() => selectCategory(idx)}
-              ref={(el) => (itemsRef.current[idx] = el)}
               style={
                 activeIndex === idx
                   ? styles.categoriesBtnActive
