@@ -23,16 +23,14 @@ interface ListingsProps {
   category: string;
 }
 
+//! Issue: Category changes but the current page doesn't so if i'm on page 2 and i change the category the request goes with page=2 so that needs to be fixed
+
 const Listings = ({ category }: ListingsProps) => {
-  console.log("Fetch Here: " + category);
-
-  //TODO: use Categroy to fetch data later
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["listings", currentPage],
-    queryFn: () => fetchlistings({ currentPage }),
+    queryKey: ["listings", currentPage, category],
+    queryFn: () => fetchlistings({ currentPage, category }),
   });
   const items = data?.data;
   const metaData = data?.metaData;

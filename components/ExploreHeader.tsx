@@ -31,13 +31,13 @@ const categories = [
   },
   {
     name: "Bed & Breakfast",
-    icon: "local-fire-department",
+    icon: "free-breakfast",
     category: "Bed %26 Breakfast",
   },
   {
     name: "Others",
-    icon: "beach-access",
-    category: "Other",
+    icon: "other-houses",
+    category: "special",
   },
 ];
 
