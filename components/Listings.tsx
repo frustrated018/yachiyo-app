@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   FlatList,
@@ -29,17 +29,16 @@ const Listings = ({ category }: ListingsProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["listings",currentPage],
+    queryKey: ["listings", currentPage],
     queryFn: () => fetchlistings({ currentPage }),
   });
   const items = data?.data;
   const metaData = data?.metaData;
 
-  const listRef = useRef<FlatList>(null);
   // Render one listing row for the FlatList
   const renderRow: ListRenderItem<Listing> = ({ item }) => {
     return (
-      <Link href={`/listing/${item.id}`} asChild>
+      <Link href={`/details/${item._id}`} asChild>
         <TouchableOpacity>
           <Animated.View
             style={styles.listing}
@@ -105,7 +104,6 @@ const Listings = ({ category }: ListingsProps) => {
         <FlatList
           renderItem={renderRow}
           data={items}
-          ref={listRef}
           ListFooterComponent={() => (
             <Pagination
               totalPages={metaData.totalPages}

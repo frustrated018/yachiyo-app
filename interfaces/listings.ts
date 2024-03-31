@@ -1,4 +1,5 @@
 export interface Listing {
+  _id: string;
   id: string;
   listing_url: string;
   scrape_id: string;
