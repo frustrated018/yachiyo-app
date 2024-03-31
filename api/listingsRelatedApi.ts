@@ -5,7 +5,7 @@ interface fetchlistingsProps {
 export const fetchlistings = async ({ currentPage }: fetchlistingsProps) => {
   try {
     const result = await fetch(
-      `https://yachiyo-app-db.vercel.app/listings?page=${currentPage}&limit=15`
+      `https://yachiyo-app-db.vercel.app/listings?page=${currentPage}&limit=15&property_type=apartment`
     );
     if (!result.ok) {
       throw new Error("Failed to fetch Listings");
