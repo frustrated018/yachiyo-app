@@ -15,12 +15,24 @@ import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 import Animated, { SlideInDown } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
 
 const DetailsPage = () => {
   const params = useLocalSearchParams();
+
+  //! Fake db Call
+  const showToast = () => {
+    setTimeout(() => {
+      Toast.show({
+        type: "success",
+        text1: "Bid placed!",
+        text2: "Please go to the checkout page to Complete the reservation.",
+      });
+    }, 3000);
+  };
 
   // Handle if params.id is an array by taking the first element
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -122,11 +134,13 @@ const DetailsPage = () => {
 
           <TouchableOpacity
             style={[defaultStyles.btn, { paddingRight: 20, paddingLeft: 20 }]}
+            onPress={showToast}
           >
             <Text style={defaultStyles.btnText}>Reserve</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
+      <Toast position="bottom" />
     </View>
   );
 };
